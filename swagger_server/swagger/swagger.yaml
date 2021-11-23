@@ -1,0 +1,85 @@
+openapi: 3.0.1
+info:
+  title: Lottery Service API
+  description: Lottery Microservice of Message in a Bottle Application
+  version: "0.1"
+servers:
+- url: /
+paths:
+  /users/{user_id}/lottery:
+    get:
+      tags:
+      - Lottery
+      description: Get earned points and trials left
+      operationId: mib_resources_users_get_lottery_info
+      parameters:
+      - name: user_id
+        in: path
+        description: User Unique ID
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: Return lottery info
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LotteryInfo'
+        default:
+          description: An error occured during retrieving lottery info
+      x-openapi-router-controller: swagger_server.controllers.lottery_controller
+    post:
+      tags:
+      - Lottery
+      summary: Spin the roulette to earn points
+      operationId: mib_resources_users_spin_roulette
+      parameters:
+      - name: user_id
+        in: path
+        description: User Unique ID
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "201":
+          description: Return earned points and trials left
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LotteryInfo'
+        default:
+          description: Error during spinning the roulette
+      x-openapi-router-controller: swagger_server.controllers.lottery_controller
+components:
+  schemas:
+    LotteryInfo:
+      required:
+      - id
+      - points
+      - trials
+      type: object
+      properties:
+        id:
+          type: integer
+          description: id of customer
+          example: 0
+        points:
+          type: integer
+          description: earned points of customer
+          example: 50
+        trials:
+          type: integer
+          description: trials left
+          example: 2
+      example:
+        trials: 2
+        id: 0
+        points: 50
+
