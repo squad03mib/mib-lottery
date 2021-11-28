@@ -1,8 +1,9 @@
 import connexion
 import six
-
-from swagger_server.models.lottery_info import LotteryInfo  # noqa: E501
+import datetime
+from swagger_server.models_db.user import User  # noqa: E501
 from swagger_server import util
+from swagger_server.dao.user_manager import UserManager
 
 
 def mib_resources_users_get_lottery_info(user_id):  # noqa: E501
@@ -28,4 +29,19 @@ def mib_resources_users_spin_roulette(user_id):  # noqa: E501
 
     :rtype: LotteryInfo
     """
-    return 'do some magic!'
+
+    user = User()
+    body = connexion.request.get_json()
+    user.set_email(body.email)
+    user.set_password(body.password)
+    user.set_first_name(body.firstname)
+    user.set_last_name(body.lastname)
+    UserManager.create_user(user)
+
+    response_object = {
+        'user': user.serialize(),
+        'status': 'success',
+        'message': 'Successfully registered',
+    }
+
+    return response_object
