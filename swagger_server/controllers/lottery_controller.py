@@ -1,9 +1,11 @@
 import connexion
 import six
 import datetime
-from swagger_server.models_db.user import User  # noqa: E501
+from swagger_server.models_db.lottery import Lottery  # noqa: E501
+from swagger_server.models.lottery_info import LotteryInfo
 from swagger_server import util
-from swagger_server.dao.user_manager import UserManager
+from swagger_server.dao.lottery_manager import LotteryManager
+from flask import jsonify
 
 
 def mib_resources_users_get_lottery_info(user_id):  # noqa: E501
@@ -16,7 +18,9 @@ def mib_resources_users_get_lottery_info(user_id):  # noqa: E501
 
     :rtype: LotteryInfo
     """
-    return 'do some magic!'
+    lottery = LotteryManager.retrieve_by_id_user(user_id)
+
+    return jsonify(lottery.serialize())
 
 
 def mib_resources_users_spin_roulette(user_id):  # noqa: E501
@@ -30,18 +34,19 @@ def mib_resources_users_spin_roulette(user_id):  # noqa: E501
     :rtype: LotteryInfo
     """
 
-    user = User()
-    body = connexion.request.get_json()
-    user.set_email(body.email)
-    user.set_password(body.password)
-    user.set_first_name(body.firstname)
-    user.set_last_name(body.lastname)
-    UserManager.create_user(user)
+    lottery = LotteryManager.retrieve_by_id_user(user_id)
 
-    response_object = {
-        'user': user.serialize(),
-        'status': 'success',
-        'message': 'Successfully registered',
-    }
+    lottery_ = Lottery()
 
-    return response_object
+    if lottery is None:
+        lottery_.id_user = user_id
+        lottery_.points = 10
+        lottery_.trials = 1
+        LotteryManager.create_lottery(lottery_)
+    else:
+        lottery.id_user = user_id
+        lottery.points = lottery.points + 10
+        lottery.trials = lottery.trials - 1
+        LotteryManager.update(lottery)
+
+    return {'msg': 'OK'}

@@ -2,4 +2,4 @@
 Here you need to import all classes
 to be managed by ORM.
 """
-from .user import User  # noqa: F401
+from .lottery import Lottery  # noqa: F401

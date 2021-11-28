@@ -16,11 +16,11 @@ services:
     env_file:
       - env_file
 
-  mib_users:
+  mib_lottery:
     <<:
       # Building the image
-      &mib_users
-      image: "mib-users:latest"
+      &mib_lottery
+      image: "mib-lottery:latest"
       build:
         context: .
         dockerfile: Dockerfile
