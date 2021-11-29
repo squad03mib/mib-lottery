@@ -15,13 +15,13 @@ class TestLotteryController(BaseTestCase):
     def test_mib_resources_users_get_lottery_info(self):
         """Test case for mib_resources_users_get_lottery_info
 
-        
+
         """
         response = self.client.open(
-            '/users/{user_id}/lottery'.format(user_id=789),
+            '/users/{user_id}/lottery'.format(user_id=1),
             method='GET')
-        self.assert200(response,
-                       'Response body is : ' + response.data.decode('utf-8'))
+        #self.assert200(response,'Response body is : ' + response.data.decode('utf-8'))
+        assert response.status_code == 200
 
     def test_mib_resources_users_spin_roulette(self):
         """Test case for mib_resources_users_spin_roulette
@@ -29,12 +29,7 @@ class TestLotteryController(BaseTestCase):
         Spin the roulette to earn points
         """
         response = self.client.open(
-            '/users/{user_id}/lottery'.format(user_id=789),
+            '/users/{user_id}/lottery'.format(user_id=1),
             method='POST')
-        self.assert200(response,
-                       'Response body is : ' + response.data.decode('utf-8'))
-
-
-if __name__ == '__main__':
-    import unittest
-    unittest.main()
+        #self.assert200(response,'Response body is : ' + response.data.decode('utf-8'))
+        assert response.status_code == 200

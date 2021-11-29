@@ -5,7 +5,7 @@
 version: "3.6"
 
 services:
-  db:
+  db_lottery:
     image: postgres:13
     restart: unless-stopped
     volumes:
@@ -21,6 +21,8 @@ services:
       # Building the image
       &mib_lottery
       image: "mib-lottery:latest"
+      volumes:
+        - .:/swagger_server
       build:
         context: .
         dockerfile: Dockerfile
@@ -30,9 +32,30 @@ services:
     env_file:
       - env_file
     environment:
-      - POSTGRES_HOST=db
+      - POSTGRES_HOST=db_lottery
     depends_on:
-      - db
+      - db_lottery
+      - redis
+      - migrations_lottery
+
+  redis:
+    image: "redis:alpine"
+    ports:
+      - "6739:6739"
+
+  migrations_lottery:
+    #
+    # this service is used to apply migrations on db
+    #
+    <<: *mib_lottery
+    command: flask db upgrade
+    env_file:
+      - env_file
+    environment:
+      - POSTGRES_HOST=db_lottery
+    restart: on-failure
+    depends_on:
+      - db_lottery
 
 # Declaring all volumes
 volumes:

@@ -4,13 +4,16 @@ import connexion
 import os
 import connexion
 from flask_environments import Environments
+from flask_migrate import Migrate, MigrateCommand
 from flask_sqlalchemy import SQLAlchemy
+from flask_script import Manager
 import logging
 
 __version__ = '0.1'
 
 db = None
 debug_toolbar = None
+migrate = None
 redis_client = None
 app = None
 api_app = None
@@ -53,6 +56,7 @@ def create_app():
     env = Environments(app)
     env.from_object(config_object)
 
+    manager = Manager(app)
     # registering db
     db = SQLAlchemy(
         app=app
@@ -60,6 +64,13 @@ def create_app():
 
     # requiring the list of models
     import swagger_server.models_db
+
+    # creating migrate
+    migrate = Migrate(
+        app=app,
+        db=db
+    )
+    manager.add_command('db', MigrateCommand)
 
     # checking the environment
     if flask_env == 'testing':

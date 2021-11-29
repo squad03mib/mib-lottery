@@ -1,7 +1,7 @@
 #
 # Docker file for Message in a Bottle v1.0
 #
-FROM python:3.8
+FROM python:3.9
 LABEL maintainer="squad_3"
 LABEL version="1.0"
 LABEL description="Message in a Bottle Lottery Microservice"
