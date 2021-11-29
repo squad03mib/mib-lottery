@@ -24,6 +24,7 @@ class DevConfig(DebugConfig):
     SQLALCHEMY_ECHO = False
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
+
 class TestConfig(Config):
     """
     This is the main configuration object for application.
@@ -47,7 +48,7 @@ class ProdConfig(DevConfig):
     DEBUG = False
 
     import os
-    SECRET_KEY = os.getenv('APP_SECRET_KEY', os.urandom(24))
+    SECRET_KEY = os.getenv('APP_SECRET', os.urandom(24))
 
     SQLALCHEMY_ECHO = False
     SQLALCHEMY_TRACK_MODIFICATIONS = False
@@ -59,4 +60,3 @@ class ProdConfig(DevConfig):
     SQLALCHEMY_DATABASE_URI = 'postgres://%s:%s@%s:%s/%s' % (
         POSTGRES_USER, POSTGRES_PASS, POSTGRES_HOST, POSTGRES_PORT, POSTGRES_DB)
     SQLALCHEMY_TRACK_MODIFICATIONS = False
-

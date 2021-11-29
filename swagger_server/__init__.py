@@ -1,20 +1,15 @@
-
 #!/usr/bin/env python3
 
 import connexion
-
-from swagger_server import encoder
 import os
 import connexion
 from flask_environments import Environments
-from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
 import logging
 
 __version__ = '0.1'
 
 db = None
-migrate = None
 debug_toolbar = None
 redis_client = None
 app = None
@@ -29,7 +24,6 @@ def create_app():
     """
     global db
     global app
-    global migrate
     global api_app
 
     # first initialize the logger

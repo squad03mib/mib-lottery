@@ -19,5 +19,23 @@ class LotteryManager(Manager):
         return Lottery.query.filter(Lottery.id_user == id_user_).first()
 
     @staticmethod
+    def retrieve_points(id_user_):
+        Manager.check_none(id_user=id_user_)
+        return Lottery.query.filter(Lottery.id_user == id_user_).first().points
+
+    @staticmethod
+    def retrieve_trials(id_user_):
+        Manager.check_none(id_user=id_user_)
+        return Lottery.query.filter(Lottery.id_user == id_user_).first().trials
+
+    @staticmethod
+    def update_trials():
+        lottery = Lottery.query.trials
+
+        for l in lottery:
+            l.trials = l.trials + 1
+            Manager.update(lottery=lottery)
+
+    @staticmethod
     def update_lottery(lottery: Lottery):
         Manager.update(lottery=lottery)

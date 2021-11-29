@@ -1,11 +1,7 @@
-import connexion
-import six
-import datetime
 from swagger_server.models_db.lottery import Lottery  # noqa: E501
-from swagger_server.models.lottery_info import LotteryInfo
-from swagger_server import util
 from swagger_server.dao.lottery_manager import LotteryManager
 from flask import jsonify
+from random import SystemRandom
 
 
 def mib_resources_users_get_lottery_info(user_id):  # noqa: E501
@@ -20,7 +16,11 @@ def mib_resources_users_get_lottery_info(user_id):  # noqa: E501
     """
     lottery = LotteryManager.retrieve_by_id_user(user_id)
 
-    return jsonify(lottery.serialize())
+    if lottery is None:
+        response = {'status': 'Lottery not present'}
+        return jsonify(response), 404
+
+    return jsonify(lottery.serialize()), 200
 
 
 def mib_resources_users_spin_roulette(user_id):  # noqa: E501
@@ -36,17 +36,19 @@ def mib_resources_users_spin_roulette(user_id):  # noqa: E501
 
     lottery = LotteryManager.retrieve_by_id_user(user_id)
 
-    lottery_ = Lottery()
-
     if lottery is None:
-        lottery_.id_user = user_id
-        lottery_.points = 10
-        lottery_.trials = 1
-        LotteryManager.create_lottery(lottery_)
-    else:
+        lottery = Lottery()
         lottery.id_user = user_id
-        lottery.points = lottery.points + 10
-        lottery.trials = lottery.trials - 1
-        LotteryManager.update(lottery)
+        lottery.points = 0
+        lottery.trials = 1
+        LotteryManager.create_lottery(lottery)
+    else:
+        if lottery.trials > 0:
+            prizes = [10, 20, 40, 80]
+            rand = SystemRandom()
+            prize = rand.choice(prizes)
+            lottery.points = lottery.points + prize
+            lottery.trials = lottery.trials - 1
+            LotteryManager.update_lottery(lottery)
 
-    return {'msg': 'OK'}
+    return jsonify(lottery.serialize()), 201

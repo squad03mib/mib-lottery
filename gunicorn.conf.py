@@ -3,7 +3,7 @@ Message in a Bottle
 Gunicorn configuration file
 
 This file is the configuration file for gunicorn, the
-WSGI server of mib-api-gateway microservice.
+WSGI server of mib-lottery microservice.
 """
 
 # the bind address
