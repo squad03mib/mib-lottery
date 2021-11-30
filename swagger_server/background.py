@@ -1,6 +1,6 @@
 from celery import Celery
 from datetime import timedelta
-BACKEND = BROKER = 'redis://localhost:6379'
+BACKEND = BROKER = 'redis://redis:6379'
 celery = Celery(__name__, backend=BACKEND, broker=BROKER)
 
 

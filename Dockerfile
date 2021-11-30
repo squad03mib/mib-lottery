@@ -10,12 +10,12 @@ LABEL description="Message in a Bottle Lottery Microservice"
 COPY . /app
 # setting the workdir
 WORKDIR /app
-
+RUN chmod +x celery.sh
 # installing all requirements
 RUN ["pip", "install", "-r", "requirements.prod.txt"]
 
 # exposing the port
 EXPOSE 5000/tcp
-
 # Main command
-CMD ["gunicorn", "--config", "gunicorn.conf.py", "wsgi:app"]
+CMD  ./celery.sh
+

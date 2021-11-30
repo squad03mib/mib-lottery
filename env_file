@@ -3,7 +3,8 @@
 #
 #------------------------
 FLASK_ENV=production
-
+FLASK_DEBUG=TRUE
+PYTHONPATH='/app'
 #
 # Postgres configuration
 #
