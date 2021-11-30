@@ -30,7 +30,7 @@ class LotteryManager(Manager):
 
     @staticmethod
     def update_trials():
-        lottery = Lottery.query.trials
+        lottery = Lottery.query
 
         for l in lottery:
             l.trials = l.trials + 1

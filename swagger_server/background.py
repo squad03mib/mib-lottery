@@ -6,7 +6,7 @@ celery = Celery(__name__, backend=BACKEND, broker=BROKER)
 
 @celery.on_after_configure.connect
 def setup_periodic_task(sender, **kwargs):
-    sender.add_periodic_task(timedelta(seconds=30),
+    sender.add_periodic_task(timedelta(seconds=5),
                              increase_trials, expires=10)
 
 
@@ -15,4 +15,5 @@ def increase_trials():
     from swagger_server import create_app
     app = create_app()
     from swagger_server.dao.lottery_manager import LotteryManager
-    print("hello")
+
+    LotteryManager.update_trials()
