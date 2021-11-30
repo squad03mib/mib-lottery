@@ -1,8 +1,5 @@
 from celery import Celery
-from swagger_server.dao.lottery_manager import LotteryManager
-from swagger_server import db
 from datetime import timedelta
-
 BACKEND = BROKER = 'redis://localhost:6379'
 celery = Celery(__name__, backend=BACKEND, broker=BROKER)
 
@@ -17,7 +14,5 @@ def setup_periodic_task(sender, **kwargs):
 def increase_trials():
     from swagger_server import create_app
     app = create_app()
-    db.init_app(app)
-
-    with app.app_context():
-        LotteryManager.update_trials()
+    from swagger_server.dao.lottery_manager import LotteryManager
+    print("hello")

@@ -58,12 +58,12 @@ def create_app():
 
     manager = Manager(app)
     # registering db
+    from swagger_server.models_db.lottery import Lottery
     db = SQLAlchemy(
         app=app
     )
 
     # requiring the list of models
-    import swagger_server.models_db
 
     # creating migrate
     migrate = Migrate(
