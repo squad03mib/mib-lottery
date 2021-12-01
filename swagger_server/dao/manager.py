@@ -32,11 +32,3 @@ class Manager(object):
     def update(**kwargs):
         Manager.check_none(**kwargs)
         db.session.commit()
-
-    @staticmethod
-    def delete(**kwargs):
-        Manager.check_none(**kwargs)
-
-        for bean in kwargs.values():
-            db.session.delete(bean)
-        db.session.commit()

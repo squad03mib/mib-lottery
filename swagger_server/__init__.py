@@ -2,11 +2,9 @@
 
 import connexion
 import os
-import connexion
 from flask_environments import Environments
-from flask_migrate import Migrate, MigrateCommand
+from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
-from flask_script import Manager
 import logging
 
 __version__ = '0.1'
@@ -28,6 +26,7 @@ def create_app():
     global db
     global app
     global api_app
+    global migrate
 
     # first initialize the logger
     init_logger()
@@ -56,12 +55,10 @@ def create_app():
     env = Environments(app)
     env.from_object(config_object)
 
-    manager = Manager(app)
     # registering db
     db = SQLAlchemy(
         app=app
     )
-
 
     from swagger_server.models_db.lottery import Lottery
     # requiring the list of models
@@ -71,7 +68,6 @@ def create_app():
         app=app,
         db=db
     )
-    manager.add_command('db', MigrateCommand)
 
     # checking the environment
     if flask_env == 'testing':

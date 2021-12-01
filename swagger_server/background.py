@@ -6,7 +6,7 @@ celery = Celery(__name__, backend=BACKEND, broker=BROKER)
 
 @celery.on_after_configure.connect
 def setup_periodic_task(sender, **kwargs):
-    sender.add_periodic_task(timedelta(seconds=5),
+    sender.add_periodic_task(timedelta(seconds=60),
                              increase_trials, expires=10)
 
 
