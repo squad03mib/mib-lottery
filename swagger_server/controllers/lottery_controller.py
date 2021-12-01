@@ -50,8 +50,5 @@ def mib_resources_users_spin_roulette(user_id):  # noqa: E501
             lottery.points = lottery.points + prize
             lottery.trials = lottery.trials - 1
             LotteryManager.update_lottery(lottery)
-        else:
-            response = {'status': 'No trials'}
-            return jsonify(response)
 
     return jsonify(lottery.serialize()), 201
