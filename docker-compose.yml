@@ -30,7 +30,7 @@ services:
         - env_file
 
     ports:
-      - "5001:5001"
+      - "5002:5002"
     env_file:
       - env_file
     environment:
