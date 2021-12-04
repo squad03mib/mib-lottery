@@ -22,7 +22,7 @@ services:
       &mib_lottery
       image: "mib-lottery:latest"
       volumes:
-        - .:/swagger_server
+        - .:/app
       build:
         context: .
         dockerfile: Dockerfile
@@ -35,12 +35,14 @@ services:
       - env_file
     environment:
       - POSTGRES_HOST=db_lottery
+      - BROKER_URL=redis://redis_lottery
+      - RESULT_BACKEND=redis://redis_lottery
     depends_on:
       - db_lottery
-      - redis
+      - redis_lottery
       - migrations_lottery
 
-  redis:
+  redis_lottery:
     image: "redis:alpine"
     ports:
       - "6379:6379"
@@ -60,6 +62,46 @@ services:
     restart: on-failure
     depends_on:
       - db_lottery
+
+  celery_worker_lottery:
+    <<: *mib_lottery
+    command:
+      [
+        'celery',
+        '-A',
+        'swagger_server.background',
+        'worker',
+        '--loglevel=INFO'
+      ]
+    env_file:
+      - env_file
+    environment:
+      - POSTGRES_HOST=db_lottery
+      - BROKER_URL=redis://redis_lottery
+      - RESULT_BACKEND=redis://redis_lottery
+    depends_on:
+      - db_lottery
+      - redis_lottery
+
+  celery_beat_lottery:
+    <<: *mib_lottery
+    command:
+      [
+        'celery',
+        '-A',
+        'swagger_server.background',
+        'beat',
+        '--loglevel=INFO'
+      ]
+    env_file:
+      - env_file
+    environment:
+      - POSTGRES_HOST=db_lottery
+      - BROKER_URL=redis://redis_lottery
+      - RESULT_BACKEND=redis://redis_lottery
+    depends_on:
+      - db_lottery
+      - redis_lottery
 
 # Declaring all volumes
 volumes:
