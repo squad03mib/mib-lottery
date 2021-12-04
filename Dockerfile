@@ -15,7 +15,7 @@ RUN chmod +x celery.sh
 RUN ["pip", "install", "-r", "requirements.prod.txt"]
 
 # exposing the port
-EXPOSE 5000/tcp
+EXPOSE 5002/tcp
 # Main command
 CMD  ./celery.sh
 
