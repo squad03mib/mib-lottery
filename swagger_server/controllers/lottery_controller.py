@@ -17,8 +17,11 @@ def mib_resources_users_get_lottery_info(user_id):  # noqa: E501
     lottery = LotteryManager.retrieve_by_id_user(user_id)
 
     if lottery is None:
-        response = {'status': 'Lottery not present'}
-        return jsonify(response), 404
+        lottery = Lottery()
+        lottery.id_user = user_id
+        lottery.points = 0
+        lottery.trials = 1
+        LotteryManager.create_lottery(lottery)
 
     return jsonify(lottery.serialize()), 200
 
