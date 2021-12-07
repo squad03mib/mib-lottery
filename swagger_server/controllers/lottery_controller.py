@@ -4,6 +4,17 @@ from flask import jsonify
 from random import SystemRandom
 
 
+def create_lottery(user_id):
+
+    lottery = Lottery()
+    lottery.id_user = user_id
+    lottery.points = 0
+    lottery.trials = 1
+    LotteryManager.create_lottery(lottery)
+
+    return lottery
+
+
 def mib_resources_users_get_lottery_info(user_id):  # noqa: E501
     """mib_resources_users_get_lottery_info
 
@@ -17,11 +28,7 @@ def mib_resources_users_get_lottery_info(user_id):  # noqa: E501
     lottery = LotteryManager.retrieve_by_id_user(user_id)
 
     if lottery is None:
-        lottery = Lottery()
-        lottery.id_user = user_id
-        lottery.points = 0
-        lottery.trials = 1
-        LotteryManager.create_lottery(lottery)
+        lottery = create_lottery(user_id)
 
     return jsonify(lottery.serialize()), 200
 
@@ -40,11 +47,7 @@ def mib_resources_users_spin_roulette(user_id):  # noqa: E501
     lottery = LotteryManager.retrieve_by_id_user(user_id)
 
     if lottery is None:
-        lottery = Lottery()
-        lottery.id_user = user_id
-        lottery.points = 0
-        lottery.trials = 1
-        LotteryManager.create_lottery(lottery)
+        lottery = create_lottery(user_id)
     else:
         if lottery.trials > 0:
             prizes = [10, 20, 40, 80]
