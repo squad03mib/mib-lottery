@@ -33,6 +33,6 @@ class TestLotteryController(BaseTestCase):
         assert response.status_code == 200
 
         response = self.client.open(
-            '/users/{user_id}/lottery'.format(user_id=999),
+            '/users/{user_id}/lottery'.format(user_id=-1),
             method='GET')
         assert response.status_code == 404
