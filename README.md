@@ -1,3 +1,5 @@
+[![squad03mib](https://circleci.com/gh/squad03mib/mib-lottery.svg?style=svg)](https://app.circleci.com/pipelines/github/squad03mib/mib-lottery)
+[![codecov](https://codecov.io/gh/squad03mib/mib-lottery/branch/main/graph/badge.svg?token=XDDQRTJFYW)](https://codecov.io/gh/squad03mib/mib-lottery)
 # Message in A Bottle - Lottery
 
 This is the source code of Message in a Bottle Lottery microservice, self project of _Advanced Software Engineering_ course, University of Pisa.
