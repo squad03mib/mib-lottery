@@ -13,7 +13,7 @@ _APP = create_app()
 
 @celery.on_after_configure.connect
 def setup_periodic_task(sender, **kwargs):
-    sender.add_periodic_task(timedelta(seconds=10),
+    sender.add_periodic_task(timedelta(minutes=10),
                              increase_trials, expires=10)
 
 
