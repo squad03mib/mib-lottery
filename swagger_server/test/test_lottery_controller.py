@@ -40,7 +40,7 @@ class TestLotteryController(BaseTestCase):
         assert response.status_code == 404
 
     def test_mib_resources_users_use_lottery_points(self):
-        """Test case for     def test_mib_resources_users_use_lottery_points
+        """Test case for test_mib_resources_users_use_lottery_points
 
 
         """
