@@ -87,4 +87,4 @@ def mib_resources_users_use_lottery_points(body, user_id):  # noqa: E501
         lottery.points = lottery.points - body.count
         LotteryManager.update_lottery(lottery)
 
-    return jsonify(lottery.serialize()), 201
+    return jsonify(lottery.serialize()), 200
