@@ -57,6 +57,39 @@ paths:
         default:
           description: Error during spinning the roulette
       x-openapi-router-controller: swagger_server.controllers.lottery_controller
+  /users/{user_id}/lottery/use:
+    post:
+      tags:
+      - Lottery
+      summary: Use lottery points
+      operationId: mib_resources_users_use_lottery_points
+      parameters:
+      - name: user_id
+        in: path
+        description: User Unique ID
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        description: Points to be spent
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Points'
+        required: true
+      responses:
+        "201":
+          description: Return earned points and trials left
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LotteryInfo'
+        default:
+          description: Error during spending the points
+      x-openapi-router-controller: swagger_server.controllers.lottery_controller
 components:
   schemas:
     LotteryInfo:
@@ -82,4 +115,14 @@ components:
         trials: 2
         id: 0
         points: 50
-
+    Points:
+      required:
+      - count
+      type: object
+      properties:
+        count:
+          type: integer
+          description: Lottery points of customer
+          example: 50
+      example:
+        count: 50
